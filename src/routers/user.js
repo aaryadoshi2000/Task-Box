@@ -25,7 +25,7 @@ router.post('/users', async (req, res) => {
 
 		  const mailTransporter = nodemailer.createTransport(sgTransport({
 			auth: {
-				api_key: "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"
+				api_key: process.env.API_KEY
 			}
 		}))
 
