@@ -13,6 +13,7 @@ router.post('/users', async (req, res) => {
 		await user.save();
 		const token = await user.generateAuthToken();
 
+		console.log("processs .emvevev",process.env)
 		let transporter = nodemailer.createTransport({
 			service: 'gmail',
 			auth: {
