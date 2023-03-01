@@ -14,7 +14,7 @@ router.post('/users', async (req, res) => {
 		await user.save();
 		const token = await user.generateAuthToken();
 
-		console.log("processs .emvevev",process.env)
+		console.log("processs email id",process.env.EMAIL_ID)
 		// let transporter = nodemailer.createTransport({
 		// 	service: 'gmail',
 		// 	auth: {
