@@ -5,6 +5,7 @@ const User = require('../models/user');
 const auth = require('../middleware/auth');
 const router = new express.Router();
 const nodemailer = require("nodemailer")
+	sgTransport = require("nodemailer-sendgrid-transport")
 
 router.post('/users', async (req, res) => {
 	const user = new User(req.body);
@@ -14,22 +15,29 @@ router.post('/users', async (req, res) => {
 		const token = await user.generateAuthToken();
 
 		console.log("processs .emvevev",process.env)
-		let transporter = nodemailer.createTransport({
-			service: 'gmail',
+		// let transporter = nodemailer.createTransport({
+		// 	service: 'gmail',
+		// 	auth: {
+		// 	  user: process.env.EMAIL_ID,
+		// 	  pass: process.env.PASSWORD
+		// 	}
+		//   });
+
+		  const mailTransporter = nodemailer.createTransport(sgTransport({
 			auth: {
-			  user: process.env.EMAIL_ID,
-			  pass: process.env.PASSWORD
+				api_key: "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"
 			}
-		  });
+		}))
 
 		  let mailObj = {
 			from: 'aaryadoshi2000@gmail.com',
 			to: req.body.email,
+			replyTo : req.body.email,
 			subject: 'Account Created',
 			text: 'You have successfully created your account for Todo App, Click on the link to get started: https://todo-main-deploy.herokuapp.com/ '
 		  };
 
-		  transporter.sendMail(mailObj, function(error, info){
+		  mailTransporter.sendMail(mailObj, function(error, info){
 			if (error) {
 			  console.log(error);
 			} else {
