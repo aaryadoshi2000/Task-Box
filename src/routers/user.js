@@ -5,7 +5,7 @@ const User = require('../models/user');
 const auth = require('../middleware/auth');
 const router = new express.Router();
 const nodemailer = require("nodemailer")
-	sgTransport = require("nodemailer-sendgrid-transport")
+
 
 router.post('/users', async (req, res) => {
 	const user = new User(req.body);
@@ -14,7 +14,6 @@ router.post('/users', async (req, res) => {
 		await user.save();
 		const token = await user.generateAuthToken();
 
-		console.log("processs email id",process.env.EMAIL_ID)
 		let transporter = nodemailer.createTransport({
 			service: 'gmail',
 			auth: {
@@ -23,18 +22,12 @@ router.post('/users', async (req, res) => {
 			}
 		  });
 
-		//   const mailTransporter = nodemailer.createTransport(sgTransport({
-		// 	auth: {
-		// 		api_key: process.env.API_KEY
-		// 	}
-		// }))
 
 		  let mailObj = {
 			from: 'aaryadoshi2000@gmail.com',
 			to: req.body.email,
-			// replyTo : req.body.email,
 			subject: 'Account Created',
-			text: 'You have successfully created your account for Todo App, Click on the link to get started: https://todo-main-deploy.herokuapp.com/ '
+			text: 'You have successfully created your account for Task-Box App which is designed and developed by Aarya Doshi, Click on the link to get started: https://task-box.herokuapp.com/ '
 		  };
 
 		  transporter.sendMail(mailObj, function(error, info){
